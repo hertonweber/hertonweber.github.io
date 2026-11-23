@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechHub | Ingegneria, Produzione & Lean Manufacturing</title>
+    <meta name="description" content="Portale tecnico di divulgazione su Ingegneria, Produzione, Lean Manufacturing, Kaizen, Lean Six Sigma, Progettazione 3D e Qualità.">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen font-sans antialiased">
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="bg-slate-900 text-white border-b border-slate-800 shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Brand -->
+                <div class="flex items-center space-x-8">
+                    <a href="#top" class="text-xl font-bold tracking-tight flex items-center gap-2">
+                        <span class="bg-blue-600 text-white px-2 py-0.5 rounded text-sm font-mono">TH</span>
+                        <span>TechHub</span>
+                    </a>
+                    <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
+                        <a href="#discipline" class="hover:text-white transition">Discipline</a>
+                        <a href="#risorse" class="hover:text-white transition">Risorse Pubbliche</a>
+                        <a href="#area-ristretta" class="hover:text-white transition">Area Ristretta</a>
+                    </div>
+                </div>
+
+                <!-- Pulsante Accesso Area Ristretta -->
+                <div class="flex items-center space-x-3 text-sm">
+                    <button onclick="openRestrictedModal()"
+                            class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-1.5 rounded-md font-medium transition shadow-sm">
+                        Area Ristretta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== CONTENUTO PRINCIPALE ==================== -->
+    <main id="top" class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+        <!-- Hero Section -->
+        <section class="bg-slate-900 text-white rounded-xl p-8 md:p-12 mb-10 shadow-md relative overflow-hidden">
+            <div class="max-w-3xl relative z-10">
+                <span class="text-xs font-mono uppercase tracking-wider text-blue-400 font-semibold">
+                    Portale Tecnico & Industriale
+                </span>
+                <h1 class="text-3xl md:text-4xl font-bold mt-2 mb-4 leading-tight">
+                    Ingegneria, Produzione e Miglioramento Continuo
+                </h1>
+                <p class="text-slate-300 text-base leading-relaxed mb-6">
+                    Guide operative, standard tecnici, fogli di calcolo, disegni 3D e materiale formativo su
+                    <strong>Lean Manufacturing</strong>, <strong>Kaizen</strong>, <strong>Lean Six Sigma</strong>,
+                    <strong>Produzione</strong>, <strong>Progettazione 3D</strong> e <strong>Qualità</strong>.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <a href="#risorse"
+                       class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-5 py-2.5 rounded-md transition">
+                        Esplora i Documenti
+                    </a>
+                    <button onclick="openRestrictedModal()"
+                            class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-sm font-medium px-5 py-2.5 rounded-md transition">
+                        Accedi all'Area Ristretta
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Barra di Ricerca e Filtri per Disciplina -->
+        <section id="discipline" class="mb-10">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
+                <div>
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500">
+                        Filtra per Area Tematica
+                    </h2>
+                </div>
+                <div class="w-full md:w-80">
+                    <input type="text" id="searchInput" placeholder="Cerca per titolo, parola chiave o formato..."
+                           class="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm">
+                </div>
+            </div>
+
+            <!-- Pulsanti Categoria generati da JS -->
+            <div id="categoryFilters" class="flex flex-wrap gap-2"></div>
+        </section>
+
+        <!-- Griglia Risorse Tecniche -->
+        <section id="risorse" class="mb-14">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-slate-900">Libreria Documenti Tecnici</h2>
+                <span id="resultsCount" class="text-sm text-slate-500 font-mono">0 risorse</span>
+            </div>
+
+            <div id="resourcesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Le schede vengono renderizzate automaticamente da JavaScript -->
+            </div>
+
+            <div id="emptyState" class="hidden bg-white border border-dashed border-slate-300 rounded-lg p-12 text-center mt-4">
+                <p class="text-slate-500 text-sm">Nessun documento trovato con questi filtri.</p>
+                <button onclick="resetFilters()" class="mt-3 text-sm font-medium text-blue-600 hover:text-blue-800">
+                    Mostra tutti i documenti
+                </button>
+            </div>
+        </section>
+
+        <!-- Sezione Informativa Area Ristretta -->
+        <section id="area-ristretta" class="bg-white border border-slate-200 rounded-xl p-8 shadow-sm">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="max-w-2xl">
+                    <span class="text-xs font-mono uppercase tracking-wider text-amber-600 font-semibold">
+                        Accesso Riservato • Backend Python / Django
+                    </span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-2">Area Ristretta & Upload File</h2>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        L'area riservata permette agli utenti autorizzati dall'amministratore di caricare e consultare
+                        documentazione interna (PDF, Word, Excel, immagini e video formativi fino a 50 MB).
+                    </p>
+                </div>
+                <div class="shrink-0">
+                    <button onclick="openRestrictedModal()"
+                            class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium px-6 py-3 rounded-md transition shadow-sm">
+                        Vai al Login Area Ristretta &rarr;
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-white border-t border-slate-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-500">
+            <span>&copy; <span id="currentYear"></span> TechHub Engineering — Herton Weber</span>
+            <span>Ingegneria • Produzione • Lean Manufacturing • Kaizen • Lean Six Sigma • 3D • Qualità</span>
+        </div>
+    </footer>
+
+    <!-- ==================== MODAL AREA RISTRETTA ==================== -->
+    <div id="restrictedModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 rounded-xl max-w-md w-full p-6 shadow-xl">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <span class="inline-block bg-slate-900 text-white px-2.5 py-0.5 rounded text-xs font-mono mb-2">
+                        ACCESSO PROTETTO
+                    </span>
+                    <h3 class="text-lg font-bold text-slate-900">Portale Python / Django</h3>
+                </div>
+                <button onclick="closeRestrictedModal()" class="text-slate-400 hover:text-slate-600 text-xl leading-none">&times;</button>
+            </div>
+            <p class="text-sm text-slate-600 mb-5 leading-relaxed">
+                GitHub Pages ospita la vetrina pubblica statica. Per effettuare il <strong>login</strong> e
+                <strong>caricare file</strong> nell'Area Ristretta, accedi al server Python/Django del progetto.
+            </p>
+            <div class="space-y-3">
+                <!--
+                  ISTRUZIONE: Quando pubblicherai il sito Django su PythonAnywhere o Render,
+                  sostituisci l'indirizzo href qui sotto con il tuo link online
+                  (es. https://hertonweber.pythonanywhere.com/area-ristretta/)
+                -->
+                <a id="djangoPortalLink"
+                   href="http://127.0.0.1:8000/area-ristretta/"
+                   target="_blank" rel="noopener noreferrer"
+                   class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-md text-sm transition">
+                    Apri Area Ristretta (Server Django)
+                </a>
+                <button onclick="closeRestrictedModal()"
+                        class="block w-full text-center bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2 rounded-md text-sm transition">
+                    Chiudi
+                </button>
+            </div>
+            <p class="text-xs text-slate-400 mt-4 text-center">
+                La registrazione autonoma è disabilitata. Contatta l'amministratore per le credenziali.
+            </p>
+        </div>
+    </div>
+
+    <!-- ==================== LOGICA MODULARE JAVASCRIPT ==================== -->
+    <script>
+        // 1. CONFIGURAZIONE DISCIPLINE
+        const CATEGORIES = [
+            "Tutte",
+            "Ingegneria",
+            "Produzione",
+            "Lean Manufacturing",
+            "Kaizen",
+            "Lean Six Sigma",
+            "Progettazione 3D",
+            "Qualità"
+        ];
+
+        // 2. CATALOGO RISORSE PUBBLICHE
+        // Puoi aggiungere, modificare o rimuovere i tuoi file direttamente in questa lista.
+        // Nel campo "url" inserisci il percorso del file caricato su GitHub (es. "docs/guida-5s.pdf")
+        // oppure un link a Google Drive / YouTube.
+        const RESOURCES = [
+            {
+                title: "Guida Operativa Metodologia 5S",
+                category: "Lean Manufacturing",
+                format: "PDF",
+                date: "23/11/2026",
+                summary: "Standard operativo per l'organizzazione delle postazioni di lavoro industriali: Seiri, Seiton, Seiso, Seiketsu, Shitsuke.",
+                url: "#"
+            },
+            {
+                title: "Scheda Evento Kaizen & A3 Report",
+                category: "Kaizen",
+                format: "Excel",
+                date: "20/11/2026",
+                summary: "Modello Excel pronto all'uso per tracciare problemi, analisi delle cause radice, piano d'azione e KPI di reparto.",
+                url: "#"
+            },
+            {
+                title: "Analisi DMAIC e Calcolo Capacità di Processo (Cp / Cpk)",
+                category: "Lean Six Sigma",
+                format: "Excel",
+                date: "18/11/2026",
+                summary: "Foglio di calcolo automatico con carte di controllo e verifica della stabilità statistica di processo.",
+                url: "#"
+            },
+            {
+                title: "Linee Guida Tolleranze Geometriche GD&T per CAD 3D",
+                category: "Progettazione 3D",
+                format: "PDF",
+                date: "15/11/2026",
+                summary: "Riferimento rapido ISO GPS / ASME Y14.5 per la messa in tavola e la progettazione meccanica 3D.",
+                url: "#"
+            },
+            {
+                title: "Calcolo OEE e Bilanciamento Linea di Produzione",
+                category: "Produzione",
+                format: "Word",
+                date: "12/11/2026",
+                summary: "Procedura tecnica per misurare Disponibilità, Prestazione e Qualità sulle linee di assemblaggio e lavorazione.",
+                url: "#"
+            },
+            {
+                title: "Checklist Audit Interno ISO 9001 & Gestione Non Conformità",
+                category: "Qualità",
+                format: "PDF",
+                date: "10/11/2026",
+                summary: "Lista di controllo strutturata per verifiche ispettive interne, azioni correttive 8D e gestione reclami.",
+                url: "#"
+            },
+            {
+                title: "Introduzione al Bilanciamento Termico e Dimensionamento Meccanico",
+                category: "Ingegneria",
+                format: "Video",
+                date: "05/11/2026",
+                summary: "Lezione tecnica introduttiva con esempi pratici di calcolo applicati a impianti industriali.",
+                url: "#"
+            }
+        ];
+
+        // Stato attivo dei filtri
+        let selectedCategory = "Tutte";
+        let searchQuery = "";
+
+        const FORMAT_BADGE = {
+            "PDF": "bg-red-50 text-red-700 border-red-200",
+            "Excel": "bg-emerald-50 text-emerald-700 border-emerald-200",
+            "Word": "bg-blue-50 text-blue-700 border-blue-200",
+            "Video": "bg-purple-50 text-purple-700 border-purple-200",
+            "Immagine": "bg-amber-50 text-amber-700 border-amber-200"
+        };
+
+        function renderCategoryButtons() {
+            const container = document.getElementById("categoryFilters");
+            container.innerHTML = CATEGORIES.map(cat => {
+                const isActive = cat === selectedCategory;
+                const classes = isActive
+                    ? "bg-slate-900 text-white border-slate-900"
+                    : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100";
+                return `
+                    <button onclick="selectCategory('${cat}')"
+                            class="px-3.5 py-1.5 border rounded-full text-sm font-medium shadow-xs transition cursor-pointer ${classes}">
+                        ${cat}
+                    </button>
+                `;
+            }).join("");
+        }
+
+        function renderResources() {
+            const grid = document.getElementById("resourcesGrid");
+            const emptyState = document.getElementById("emptyState");
+            const countLabel = document.getElementById("resultsCount");
+
+            const filtered = RESOURCES.filter(res => {
+                const matchCat = selectedCategory === "Tutte" || res.category === selectedCategory;
+                const q = searchQuery.toLowerCase().trim();
+                const matchSearch = !q ||
+                    res.title.toLowerCase().includes(q) ||
+                    res.summary.toLowerCase().includes(q) ||
+                    res.category.toLowerCase().includes(q) ||
+                    res.format.toLowerCase().includes(q);
+                return matchCat && matchSearch;
+            });
+
+            countLabel.textContent = `${filtered.length} ${filtered.length === 1 ? 'risorsa' : 'risorse'}`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = "";
+                emptyState.classList.remove("hidden");
+                return;
+            }
+
+            emptyState.classList.add("hidden");
+            grid.innerHTML = filtered.map(res => {
+                const badgeStyle = FORMAT_BADGE[res.format] || "bg-slate-100 text-slate-700 border-slate-200";
+                const isPlaceholder = res.url === "#";
+                const linkAction = isPlaceholder
+                    ? `href="#risorse" onclick="alert('Sostituisci url: \'#\' nel file index.html con il percorso del tuo file (es. docs/miofile.pdf).'); return false;"`
+                    : `href="${res.url}" target="_blank" rel="noopener noreferrer"`;
+
+                return `
+                    <article class="bg-white border border-slate-200 rounded-lg p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-3">
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-100">
+                                    ${res.category}
+                                </span>
+                                <span class="text-xs font-mono font-semibold px-2 py-0.5 rounded border ${badgeStyle}">
+                                    ${res.format}
+                                </span>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-2">${res.title}</h3>
+                            <p class="text-sm text-slate-600 mb-4 leading-relaxed">${res.summary}</p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                            <span class="text-xs text-slate-400 font-mono">${res.date}</span>
+                            <a ${linkAction} class="text-sm font-medium text-blue-600 hover:text-blue-800 transition">
+                                Apri / Scarica &rarr;
+                            </a>
+                        </div>
+                    </article>
+                `;
+            }).join("");
+        }
+
+        function selectCategory(category) {
+            selectedCategory = category;
+            renderCategoryButtons();
+            renderResources();
+        }
+
+        function resetFilters() {
+            selectedCategory = "Tutte";
+            searchQuery = "";
+            document.getElementById("searchInput").value = "";
+            renderCategoryButtons();
+            renderResources();
+        }
+
+        function openRestrictedModal() {
+            document.getElementById("restrictedModal").classList.remove("hidden");
+        }
+
+        function closeRestrictedModal() {
+            document.getElementById("restrictedModal").classList.add("hidden");
+        }
+
+        // Inizializzazione pagina
+        document.getElementById("currentYear").textContent = new Date().getFullYear();
+        document.getElementById("searchInput").addEventListener("input", (e) => {
+            searchQuery = e.target.value;
+            renderResources();
+        });
+
+        // Chiudi modal cliccando fuori
+        document.getElementById("restrictedModal").addEventListener("click", (e) => {
+            if (e.target.id === "restrictedModal") closeRestrictedModal();
+        });
+
+        renderCategoryButtons();
+        renderResources();
+    </script>
+</body>
+</html>
