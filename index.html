@@ -26,10 +26,17 @@
                     </div>
                 </div>
 
-                <!-- Pulsante Accesso Area Ristretta -->
+                <!-- Pulsanti Azione -->
                 <div class="flex items-center space-x-3 text-sm">
+                    <button onclick="openUploadModal()"
+                            class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-1.5 rounded-md font-medium transition shadow-sm flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                        </svg>
+                        <span>Allega Documento</span>
+                    </button>
                     <button onclick="openRestrictedModal()"
-                            class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-1.5 rounded-md font-medium transition shadow-sm">
+                            class="hidden sm:inline-block bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 px-3.5 py-1.5 rounded-md font-medium transition cursor-pointer">
                         Area Ristretta
                     </button>
                 </div>
@@ -59,9 +66,9 @@
                        class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-5 py-2.5 rounded-md transition">
                         Esplora i Documenti
                     </a>
-                    <button onclick="openRestrictedModal()"
-                            class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-sm font-medium px-5 py-2.5 rounded-md transition">
-                        Accedi all'Area Ristretta
+                    <button onclick="openUploadModal()"
+                            class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-5 py-2.5 rounded-md transition cursor-pointer">
+                        + Allega Documento (Accesso Libero)
                     </button>
                 </div>
             </div>
@@ -76,7 +83,7 @@
                     </h2>
                 </div>
                 <div class="w-full md:w-80">
-                    <input type="text" id="searchInput" placeholder="Cerca per titolo, parola chiave o formato..."
+                    <input type="text" id="searchInput" placeholder="Cerca per titolo, parola chiave o estensione..."
                            class="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm">
                 </div>
             </div>
@@ -87,9 +94,18 @@
 
         <!-- Griglia Risorse Tecniche -->
         <section id="risorse" class="mb-14">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-slate-900">Libreria Documenti Tecnici</h2>
-                <span id="resultsCount" class="text-sm text-slate-500 font-mono">0 risorse</span>
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
+                <div class="flex items-center gap-3">
+                    <h2 class="text-xl font-bold text-slate-900">Libreria Documenti Tecnici</h2>
+                    <span id="resultsCount" class="text-xs bg-slate-200 text-slate-700 px-2.5 py-0.5 rounded-full font-mono">0 risorse</span>
+                </div>
+                <button id="quickAttachBtn" onclick="openUploadModal()"
+                        class="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-emerald-50 text-emerald-700 border border-emerald-300 text-sm font-medium px-4 py-2 rounded-md transition shadow-xs cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"/>
+                    </svg>
+                    <span id="quickAttachLabel">Allega documento</span>
+                </button>
             </div>
 
             <div id="resourcesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -98,9 +114,14 @@
 
             <div id="emptyState" class="hidden bg-white border border-dashed border-slate-300 rounded-lg p-12 text-center mt-4">
                 <p class="text-slate-500 text-sm">Nessun documento trovato con questi filtri.</p>
-                <button onclick="resetFilters()" class="mt-3 text-sm font-medium text-blue-600 hover:text-blue-800">
-                    Mostra tutti i documenti
-                </button>
+                <div class="mt-3 flex justify-center gap-4">
+                    <button onclick="resetFilters()" class="text-sm font-medium text-blue-600 hover:text-blue-800 cursor-pointer">
+                        Mostra tutti i documenti
+                    </button>
+                    <button onclick="openUploadModal()" class="text-sm font-medium text-emerald-600 hover:text-emerald-800 cursor-pointer">
+                        + Allega un nuovo file
+                    </button>
+                </div>
             </div>
         </section>
 
@@ -108,19 +129,23 @@
         <section id="area-ristretta" class="bg-white border border-slate-200 rounded-xl p-8 shadow-sm">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="max-w-2xl">
-                    <span class="text-xs font-mono uppercase tracking-wider text-amber-600 font-semibold">
-                        Accesso Riservato • Backend Python / Django
+                    <span class="text-xs font-mono uppercase tracking-wider text-emerald-600 font-semibold">
+                        Modalità Libera Attiva • Nessuna Password Richiesta
                     </span>
-                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-2">Area Ristretta & Upload File</h2>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-2">Gestione Allegati & Documenti</h2>
                     <p class="text-sm text-slate-600 leading-relaxed">
-                        L'area riservata permette agli utenti autorizzati dall'amministratore di caricare e consultare
-                        documentazione interna (PDF, Word, Excel, immagini e video formativi fino a 50 MB).
+                        In questo momento puoi allegare documenti di <strong>qualsiasi estensione</strong> direttamente per ogni categoria
+                        senza inserire utente o password. I file vengono salvati localmente nel browser e possono essere aperti o scaricati sul PC.
                     </p>
                 </div>
-                <div class="shrink-0">
+                <div class="shrink-0 flex flex-wrap gap-3">
+                    <button onclick="openUploadModal()"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-6 py-3 rounded-md transition shadow-sm cursor-pointer">
+                        + Allega Documento
+                    </button>
                     <button onclick="openRestrictedModal()"
-                            class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium px-6 py-3 rounded-md transition shadow-sm">
-                        Vai al Login Area Ristretta &rarr;
+                            class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium px-5 py-3 rounded-md transition shadow-sm cursor-pointer">
+                        Server Django &rarr;
                     </button>
                 </div>
             </div>
@@ -136,6 +161,91 @@
         </div>
     </footer>
 
+    <!-- ==================== MODAL ALLEGA DOCUMENTO (SENZA LOGIN) ==================== -->
+    <div id="uploadModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 rounded-xl max-w-lg w-full p-6 shadow-xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <span class="inline-block bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded text-xs font-mono font-semibold mb-1">
+                        ALLEGATO LIBERO • QUALSIASI ESTENSIONE
+                    </span>
+                    <h3 class="text-lg font-bold text-slate-900">Allega un Documento</h3>
+                </div>
+                <button onclick="closeUploadModal()" class="text-slate-400 hover:text-slate-600 text-2xl leading-none cursor-pointer">&times;</button>
+            </div>
+
+            <form id="uploadForm" onsubmit="confirmAttachment(event)" class="space-y-4">
+                <!-- Selezione Categoria -->
+                <div>
+                    <label for="uploadCategory" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+                        Categoria *
+                    </label>
+                    <select id="uploadCategory" required
+                            class="w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <!-- Popolato da JS -->
+                    </select>
+                </div>
+
+                <!-- Selezione File (qualsiasi estensione) -->
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+                        Seleziona File dal PC *
+                    </label>
+                    <label for="uploadFile"
+                           class="flex flex-col items-center justify-center w-full border-2 border-dashed border-slate-300 hover:border-emerald-400 bg-slate-50 hover:bg-emerald-50/40 rounded-lg p-5 cursor-pointer transition text-center">
+                        <svg class="w-8 h-8 text-slate-400 mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+                        </svg>
+                        <span class="text-sm font-medium text-slate-700">Clicca per scegliere un file</span>
+                        <span class="text-xs text-slate-500 mt-0.5">Accetta qualsiasi estensione (PDF, Excel, Word, CAD 3D, ZIP, Video, ecc.)</span>
+                        <input type="file" id="uploadFile" class="hidden" onchange="handleFileSelection(event)">
+                    </label>
+                </div>
+
+                <!-- Anteprima del file selezionato con ICONA IN ALTO A DESTRA -->
+                <div id="filePreviewBox" class="hidden relative bg-slate-50 border border-slate-200 rounded-lg p-4 pr-16">
+                    <!-- Icona tipo documento posizionata in alto a destra -->
+                    <div id="previewTypeIcon" class="absolute top-3 right-3"></div>
+                    <p class="text-xs font-mono uppercase text-emerald-700 font-semibold mb-1">File pronto per la conferma</p>
+                    <p id="previewFileName" class="text-sm font-bold text-slate-900 break-all"></p>
+                    <p id="previewFileMeta" class="text-xs text-slate-500 font-mono mt-1"></p>
+                </div>
+
+                <!-- Titolo (opzionale) -->
+                <div>
+                    <label for="uploadTitle" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+                        Titolo Documento (opzionale)
+                    </label>
+                    <input type="text" id="uploadTitle" placeholder="Se lasciato vuoto usa il nome del file"
+                           class="w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <!-- Descrizione (opzionale) -->
+                <div>
+                    <label for="uploadSummary" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+                        Descrizione (opzionale)
+                    </label>
+                    <textarea id="uploadSummary" rows="2" placeholder="Breve nota sul contenuto del documento..."
+                              class="w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                </div>
+
+                <div id="uploadError" class="hidden text-xs text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2"></div>
+
+                <!-- Pulsanti Conferma / Annulla -->
+                <div class="flex items-center justify-end gap-3 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeUploadModal()"
+                            class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md text-sm font-medium transition cursor-pointer">
+                        Annulla
+                    </button>
+                    <button type="submit" id="confirmUploadBtn" disabled
+                            class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-md text-sm font-medium transition cursor-pointer">
+                        Conferma Allegato
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ==================== MODAL AREA RISTRETTA ==================== -->
     <div id="restrictedModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
         <div class="bg-white border border-slate-200 rounded-xl max-w-md w-full p-6 shadow-xl">
@@ -146,18 +256,13 @@
                     </span>
                     <h3 class="text-lg font-bold text-slate-900">Portale Python / Django</h3>
                 </div>
-                <button onclick="closeRestrictedModal()" class="text-slate-400 hover:text-slate-600 text-xl leading-none">&times;</button>
+                <button onclick="closeRestrictedModal()" class="text-slate-400 hover:text-slate-600 text-xl leading-none cursor-pointer">&times;</button>
             </div>
             <p class="text-sm text-slate-600 mb-5 leading-relaxed">
-                GitHub Pages ospita la vetrina pubblica statica. Per effettuare il <strong>login</strong> e
-                <strong>caricare file</strong> nell'Area Ristretta, accedi al server Python/Django del progetto.
+                Per la versione multi-utente con autenticazione centralizzata, accedi al server Python/Django del progetto.
+                In locale puoi comunque allegare file liberamente usando il pulsante <strong>Allega Documento</strong>.
             </p>
             <div class="space-y-3">
-                <!--
-                  ISTRUZIONE: Quando pubblicherai il sito Django su PythonAnywhere o Render,
-                  sostituisci l'indirizzo href qui sotto con il tuo link online
-                  (es. https://hertonweber.pythonanywhere.com/area-ristretta/)
-                -->
                 <a id="djangoPortalLink"
                    href="http://127.0.0.1:8000/area-ristretta/"
                    target="_blank" rel="noopener noreferrer"
@@ -165,13 +270,10 @@
                     Apri Area Ristretta (Server Django)
                 </a>
                 <button onclick="closeRestrictedModal()"
-                        class="block w-full text-center bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2 rounded-md text-sm transition">
+                        class="block w-full text-center bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2 rounded-md text-sm transition cursor-pointer">
                     Chiudi
                 </button>
             </div>
-            <p class="text-xs text-slate-400 mt-4 text-center">
-                La registrazione autonoma è disabilitata. Contatta l'amministratore per le credenziali.
-            </p>
         </div>
     </div>
 
@@ -189,81 +291,407 @@
             "Qualità"
         ];
 
-        // 2. CATALOGO RISORSE PUBBLICHE
-        // Puoi aggiungere, modificare o rimuovere i tuoi file direttamente in questa lista.
-        // Nel campo "url" inserisci il percorso del file caricato su GitHub (es. "docs/guida-5s.pdf")
-        // oppure un link a Google Drive / YouTube.
-        const RESOURCES = [
+        // 2. CATALOGO RISORSE PREDEFINITE
+        const DEFAULT_RESOURCES = [
             {
+                id: "def-1",
                 title: "Guida Operativa Metodologia 5S",
                 category: "Lean Manufacturing",
-                format: "PDF",
+                ext: "PDF",
+                fileName: "guida-5s.pdf",
                 date: "23/11/2026",
                 summary: "Standard operativo per l'organizzazione delle postazioni di lavoro industriali: Seiri, Seiton, Seiso, Seiketsu, Shitsuke.",
-                url: "#"
+                url: "#",
+                isUserUpload: false
             },
             {
+                id: "def-2",
                 title: "Scheda Evento Kaizen & A3 Report",
                 category: "Kaizen",
-                format: "Excel",
+                ext: "XLSX",
+                fileName: "kaizen-a3.xlsx",
                 date: "20/11/2026",
                 summary: "Modello Excel pronto all'uso per tracciare problemi, analisi delle cause radice, piano d'azione e KPI di reparto.",
-                url: "#"
+                url: "#",
+                isUserUpload: false
             },
             {
+                id: "def-3",
                 title: "Analisi DMAIC e Calcolo Capacità di Processo (Cp / Cpk)",
                 category: "Lean Six Sigma",
-                format: "Excel",
+                ext: "XLSX",
+                fileName: "analisi-dmaic-cpk.xlsx",
                 date: "18/11/2026",
                 summary: "Foglio di calcolo automatico con carte di controllo e verifica della stabilità statistica di processo.",
-                url: "#"
+                url: "#",
+                isUserUpload: false
             },
             {
+                id: "def-4",
                 title: "Linee Guida Tolleranze Geometriche GD&T per CAD 3D",
                 category: "Progettazione 3D",
-                format: "PDF",
+                ext: "PDF",
+                fileName: "gdt-cad-3d.pdf",
                 date: "15/11/2026",
                 summary: "Riferimento rapido ISO GPS / ASME Y14.5 per la messa in tavola e la progettazione meccanica 3D.",
-                url: "#"
+                url: "#",
+                isUserUpload: false
             },
             {
+                id: "def-5",
                 title: "Calcolo OEE e Bilanciamento Linea di Produzione",
                 category: "Produzione",
-                format: "Word",
+                ext: "DOCX",
+                fileName: "calcolo-oee.docx",
                 date: "12/11/2026",
                 summary: "Procedura tecnica per misurare Disponibilità, Prestazione e Qualità sulle linee di assemblaggio e lavorazione.",
-                url: "#"
+                url: "#",
+                isUserUpload: false
             },
             {
+                id: "def-6",
                 title: "Checklist Audit Interno ISO 9001 & Gestione Non Conformità",
                 category: "Qualità",
-                format: "PDF",
+                ext: "PDF",
+                fileName: "audit-iso-9001.pdf",
                 date: "10/11/2026",
                 summary: "Lista di controllo strutturata per verifiche ispettive interne, azioni correttive 8D e gestione reclami.",
-                url: "#"
+                url: "#",
+                isUserUpload: false
             },
             {
+                id: "def-7",
                 title: "Introduzione al Bilanciamento Termico e Dimensionamento Meccanico",
                 category: "Ingegneria",
-                format: "Video",
+                ext: "MP4",
+                fileName: "bilanciamento-termico.mp4",
                 date: "05/11/2026",
                 summary: "Lezione tecnica introduttiva con esempi pratici di calcolo applicati a impianti industriali.",
-                url: "#"
+                url: "#",
+                isUserUpload: false
             }
         ];
 
-        // Stato attivo dei filtri
+        // Stato applicazione
+        let userAttachments = [];
+        let activeObjectUrls = [];
+        let pendingFile = null;
         let selectedCategory = "Tutte";
         let searchQuery = "";
 
-        const FORMAT_BADGE = {
-            "PDF": "bg-red-50 text-red-700 border-red-200",
-            "Excel": "bg-emerald-50 text-emerald-700 border-emerald-200",
-            "Word": "bg-blue-50 text-blue-700 border-blue-200",
-            "Video": "bg-purple-50 text-purple-700 border-purple-200",
-            "Immagine": "bg-amber-50 text-amber-700 border-amber-200"
-        };
+        // 3. DATABASE LOCALE (IndexedDB) PER SALVARE I FILE ALLEGATI SUL PC
+        const DB_NAME = "TechHubAttachmentsDB";
+        const DB_VERSION = 1;
+        const STORE_NAME = "attachments";
 
+        function openDatabase() {
+            return new Promise((resolve, reject) => {
+                if (!window.indexedDB) {
+                    reject(new Error("IndexedDB non supportato"));
+                    return;
+                }
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME, { keyPath: "id" });
+                    }
+                };
+                request.onsuccess = (e) => resolve(e.target.result);
+                request.onerror = (e) => reject(e.target.error);
+            });
+        }
+
+        async function loadAttachmentsFromDB() {
+            try {
+                const db = await openDatabase();
+                return await new Promise((resolve, reject) => {
+                    const tx = db.transaction(STORE_NAME, "readonly");
+                    const store = tx.objectStore(STORE_NAME);
+                    const req = store.getAll();
+                    req.onsuccess = () => resolve(req.result || []);
+                    req.onerror = () => reject(req.error);
+                });
+            } catch (err) {
+                console.warn("Salvataggio persistente non disponibile, uso memoria temporanea:", err);
+                return [];
+            }
+        }
+
+        async function saveAttachmentToDB(record) {
+            try {
+                const db = await openDatabase();
+                await new Promise((resolve, reject) => {
+                    const tx = db.transaction(STORE_NAME, "readwrite");
+                    tx.objectStore(STORE_NAME).put(record);
+                    tx.oncomplete = () => resolve();
+                    tx.onerror = () => reject(tx.error);
+                });
+            } catch (err) {
+                console.warn("Impossibile salvare in IndexedDB:", err);
+            }
+        }
+
+        async function deleteAttachmentFromDB(id) {
+            try {
+                const db = await openDatabase();
+                await new Promise((resolve, reject) => {
+                    const tx = db.transaction(STORE_NAME, "readwrite");
+                    tx.objectStore(STORE_NAME).delete(id);
+                    tx.oncomplete = () => resolve();
+                    tx.onerror = () => reject(tx.error);
+                });
+            } catch (err) {
+                console.warn("Impossibile eliminare da IndexedDB:", err);
+            }
+        }
+
+        // 4. UTILITÀ PER ESTENSIONI E ICONE DOCUMENTO (IN ALTO A DESTRA)
+        function escapeHtml(str) {
+            return String(str || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function getFileExtension(filename) {
+            if (!filename || !filename.includes(".")) return "FILE";
+            const parts = filename.split(".");
+            const ext = parts.pop().trim().toUpperCase();
+            return ext || "FILE";
+        }
+
+        function formatFileSize(bytes) {
+            if (!bytes && bytes !== 0) return "";
+            if (bytes < 1024) return ${bytes} B;
+            if (bytes < 1024 * 1024) return ${(bytes / 1024).toFixed(1)} KB;
+            return ${(bytes / (1024 * 1024)).toFixed(2)} MB;
+        }
+
+        function getFileTypeMeta(ext) {
+            const e = (ext || "FILE").toUpperCase();
+
+            if (e === "PDF") {
+                return {
+                    label: "PDF",
+                    classes: "bg-red-50 text-red-700 border-red-200",
+                    svg: <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+                };
+            }
+            if (["XLS", "XLSX", "XLSM", "CSV", "ODS"].includes(e)) {
+                return {
+                    label: e,
+                    classes: "bg-emerald-50 text-emerald-700 border-emerald-200",
+                    svg: <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125"/></svg>
+                };
+            }
+            if (["DOC", "DOCX", "ODT", "RTF"].includes(e)) {
+                return {
+                    label: e,
+                    classes: "bg-blue-50 text-blue-700 border-blue-200",
+                    svg: <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+                };
+            }
+            if (["PPT", "PPTX", "ODP"].includes(e)) {
+                return {
+                    label: e,
+                    classes: "bg-orange-50 text-orange-700 border-orange-200",
+                    svg: <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5"/></svg>
+                };
+            }
+            if (["STEP", "STP", "STL", "DWG", "DXF", "IGS", "IGES", "OBJ", "SLDPRT", "SLDASM", "IPT", "IAM", "FBX", "3MF"].includes(e)) {
+                return {
+                    label: e,
+                    classes: "bg-indigo-50 text-indigo-700 border-indigo-200",
+                    svg: <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"/></svg>
+                };
+            }
+            if (["PNG", "JPG", "JPEG", "GIF", "WEBP", "SVG", "BMP", "TIF", "TIFF"].includes(e)) {
+                return {
+                    label: e,
+                    classes: "bg-amber-50 text-amber-700 border-amber-200",
+                    svg: <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/></svg>
+                };
+            }
+            if (["MP4", "MOV", "AVI", "MKV", "WEBM", "WMV"].includes(e)) {
+                return {
+                    label: e,
+                    classes: "bg-purple-50 text-purple-700 border-purple-200",
+                    svg: <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"/></svg>
+                };
+            }
+            if (["ZIP", "RAR", "7Z", "TAR", "GZ"].includes(e)) {
+                return {
+                    label: e,
+                    classes: "bg-yellow-50 text-yellow-800 border-yellow-200",
+                    svg: <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/></svg>
+                };
+            }
+            if (["TXT", "MD", "JSON", "XML", "HTML", "CSS", "JS", "PY"].includes(e)) {
+                return {
+                    label: e,
+                    classes: "bg-cyan-50 text-cyan-700 border-cyan-200",
+                    svg: <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg>
+                };
+            }
+            return {
+                label: e,
+                classes: "bg-slate-100 text-slate-700 border-slate-300",
+                svg: <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+            };
+        }
+
+        function renderDocTypeBadge(ext) {
+            const meta = getFileTypeMeta(ext);
+            return `
+                <div title="Tipo documento: .${escapeHtml(meta.label.toLowerCase())}"
+                     class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border font-mono text-xs font-bold shadow-2xs ${meta.classes}">
+                    ${meta.svg}
+                    <span>${escapeHtml(meta.label)}</span>
+                </div>
+            `;
+        }
+
+        // 5. GESTIONE MODAL ALLEGATO
+        function populateCategorySelect() {
+            const select = document.getElementById("uploadCategory");
+            const selectable = CATEGORIES.filter(c => c !== "Tutte");
+            select.innerHTML = selectable.map(cat =>
+                <option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>
+            ).join("");
+        }
+
+        function openUploadModal() {
+            populateCategorySelect();
+            if (selectedCategory !== "Tutte") {
+                document.getElementById("uploadCategory").value = selectedCategory;
+            }
+            document.getElementById("uploadForm").reset();
+            if (selectedCategory !== "Tutte") {
+                document.getElementById("uploadCategory").value = selectedCategory;
+            }
+            pendingFile = null;
+            document.getElementById("filePreviewBox").classList.add("hidden");
+            document.getElementById("uploadError").classList.add("hidden");
+            document.getElementById("confirmUploadBtn").disabled = true;
+            document.getElementById("uploadModal").classList.remove("hidden");
+        }
+
+        function closeUploadModal() {
+            document.getElementById("uploadModal").classList.add("hidden");
+            pendingFile = null;
+        }
+
+        function handleFileSelection(event) {
+            const file = event.target.files[0];
+            const previewBox = document.getElementById("filePreviewBox");
+            const confirmBtn = document.getElementById("confirmUploadBtn");
+            const errorBox = document.getElementById("uploadError");
+            errorBox.classList.add("hidden");
+
+            if (!file) {
+                pendingFile = null;
+                previewBox.classList.add("hidden");
+                confirmBtn.disabled = true;
+                return;
+            }
+
+            pendingFile = file;
+            const ext = getFileExtension(file.name);
+
+            // Mostra icona del tipo documento in alto a destra nel box di anteprima
+            document.getElementById("previewTypeIcon").innerHTML = renderDocTypeBadge(ext);
+            document.getElementById("previewFileName").textContent = file.name;
+            document.getElementById("previewFileMeta").textContent = Estensione: .${ext.toLowerCase()} • Dimensione: ${formatFileSize(file.size)};
+            previewBox.classList.remove("hidden");
+            confirmBtn.disabled = false;
+
+            // Se il titolo è vuoto, suggerisce il nome del file senza estensione
+            const titleInput = document.getElementById("uploadTitle");
+            if (!titleInput.value.trim()) {
+                titleInput.value = file.name.replace(/\.[^/.]+$/, "");
+            }
+        }
+
+        async function confirmAttachment(event) {
+            event.preventDefault();
+            if (!pendingFile) {
+                const errorBox = document.getElementById("uploadError");
+                errorBox.textContent = "Seleziona prima un file dal PC.";
+                errorBox.classList.remove("hidden");
+                return;
+            }
+
+            const category = document.getElementById("uploadCategory").value;
+            const customTitle = document.getElementById("uploadTitle").value.trim();
+            const customSummary = document.getElementById("uploadSummary").value.trim();
+            const ext = getFileExtension(pendingFile.name);
+            const now = new Date();
+            const formattedDate = now.toLocaleDateString("it-IT");
+
+            const newAttachment = {
+                id: "usr-" + Date.now(),
+                title: customTitle || pendingFile.name,
+                category: category,
+                ext: ext,
+                fileName: pendingFile.name,
+                fileSize: pendingFile.size,
+                mimeType: pendingFile.type || "application/octet-stream",
+                date: formattedDate,
+                summary: customSummary || Documento allegato (.${ext.toLowerCase()}) — ${formatFileSize(pendingFile.size)}.,
+                fileBlob: pendingFile,
+                isUserUpload: true
+            };
+
+            await saveAttachmentToDB(newAttachment);
+            userAttachments.unshift(newAttachment);
+
+            closeUploadModal();
+            // Mostra subito la categoria dove è stato allegato il file
+            selectedCategory = category;
+            renderCategoryButtons();
+            renderResources();
+        }
+
+        async function removeAttachment(id) {
+            if (!confirm("Vuoi rimuovere questo documento allegato?")) return;
+            await deleteAttachmentFromDB(id);
+            userAttachments = userAttachments.filter(item => item.id !== id);
+            renderResources();
+        }
+
+        // 6. APERTURA E DOWNLOAD DEL FILE SUL PC
+        function openUploadedFile(id) {
+            const item = userAttachments.find(a => a.id === id);
+            if (!item || !item.fileBlob) return;
+            const blobUrl = URL.createObjectURL(item.fileBlob);
+            activeObjectUrls.push(blobUrl);
+
+            // Apre in una nuova scheda (PDF, immagini, video, testo si aprono subito;
+            // per altri formati il browser propone di aprirli con il programma associato sul PC)
+            const opened = window.open(blobUrl, "_blank", "noopener,noreferrer");
+            if (!opened) {
+                // Fallback se il browser blocca i popup: avvia il download diretto
+                downloadUploadedFile(id);
+            }
+        }
+
+        function downloadUploadedFile(id) {
+            const item = userAttachments.find(a => a.id === id);
+            if (!item || !item.fileBlob) return;
+            const blobUrl = URL.createObjectURL(item.fileBlob);
+            const link = document.createElement("a");
+            link.href = blobUrl;
+            link.download = item.fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+        }
+
+        // 7. RENDERING CATEGORIE E GRIGLIA DOCUMENTI
         function renderCategoryButtons() {
             const container = document.getElementById("categoryFilters");
             container.innerHTML = CATEGORIES.map(cat => {
@@ -272,31 +700,43 @@
                     ? "bg-slate-900 text-white border-slate-900"
                     : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100";
                 return `
-                    <button onclick="selectCategory('${cat}')"
+                    <button onclick="selectCategory('${escapeHtml(cat)}')"
                             class="px-3.5 py-1.5 border rounded-full text-sm font-medium shadow-xs transition cursor-pointer ${classes}">
-                        ${cat}
+                        ${escapeHtml(cat)}
                     </button>
                 `;
             }).join("");
+
+            const quickLabel = document.getElementById("quickAttachLabel");
+            quickLabel.textContent = selectedCategory === "Tutte"
+                ? "Allega documento"
+                : Allega in "${selectedCategory}";
         }
 
         function renderResources() {
+            // Pulizia URL temporanei precedenti
+            activeObjectUrls.forEach(url => URL.revokeObjectURL(url));
+            activeObjectUrls = [];
+
             const grid = document.getElementById("resourcesGrid");
             const emptyState = document.getElementById("emptyState");
             const countLabel = document.getElementById("resultsCount");
 
-            const filtered = RESOURCES.filter(res => {
+            const allResources = [...userAttachments, ...DEFAULT_RESOURCES];
+
+            const filtered = allResources.filter(res => {
                 const matchCat = selectedCategory === "Tutte" || res.category === selectedCategory;
                 const q = searchQuery.toLowerCase().trim();
                 const matchSearch = !q ||
                     res.title.toLowerCase().includes(q) ||
                     res.summary.toLowerCase().includes(q) ||
                     res.category.toLowerCase().includes(q) ||
-                    res.format.toLowerCase().includes(q);
+                    res.ext.toLowerCase().includes(q) ||
+                    (res.fileName && res.fileName.toLowerCase().includes(q));
                 return matchCat && matchSearch;
             });
 
-            countLabel.textContent = `${filtered.length} ${filtered.length === 1 ? 'risorsa' : 'risorse'}`;
+            countLabel.textContent = ${filtered.length} ${filtered.length === 1 ? 'risorsa' : 'risorse'};
 
             if (filtered.length === 0) {
                 grid.innerHTML = "";
@@ -306,31 +746,65 @@
 
             emptyState.classList.add("hidden");
             grid.innerHTML = filtered.map(res => {
-                const badgeStyle = FORMAT_BADGE[res.format] || "bg-slate-100 text-slate-700 border-slate-200";
-                const isPlaceholder = res.url === "#";
-                const linkAction = isPlaceholder
-                    ? `href="#risorse" onclick="alert('Sostituisci url: \'#\' nel file index.html con il percorso del tuo file (es. docs/miofile.pdf).'); return false;"`
-                    : `href="${res.url}" target="_blank" rel="noopener noreferrer"`;
+                const topRightIcon = renderDocTypeBadge(res.ext);
+
+                let actionsHtml = "";
+                if (res.isUserUpload) {
+                    actionsHtml = `
+                        <div class="flex items-center gap-2">
+                            <button onclick="openUploadedFile('${res.id}')"
+                                    title="Apri nel browser o con il programma predefinito del PC"
+                                    class="text-xs font-medium bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 px-2.5 py-1.5 rounded transition cursor-pointer">
+                                Apri
+                            </button>
+                            <button onclick="downloadUploadedFile('${res.id}')"
+                                    title="Scarica sul PC per aprire con il programma apposito"
+                                    class="text-xs font-medium bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded transition cursor-pointer">
+                                Scarica
+                            </button>
+                            <button onclick="removeAttachment('${res.id}')"
+                                    title="Elimina allegato"
+                                    class="text-xs text-slate-400 hover:text-red-600 px-1.5 py-1.5 rounded transition cursor-pointer">
+                                &times;
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    const isPlaceholder = res.url === "#";
+                    const linkAction = isPlaceholder
+                        ? href="#risorse" onclick="alert('Documento dimostrativo. Usa il pulsante \\'+ Allega Documento\\' per caricare e aprire i tuoi file reali.'); return false;"
+                        : href="${res.url}" target="_blank" rel="noopener noreferrer";
+                    actionsHtml = `
+                        <a ${linkAction} class="text-sm font-medium text-blue-600 hover:text-blue-800 transition">
+                            Apri / Scarica &rarr;
+                        </a>
+                    `;
+                }
 
                 return `
-                    <article class="bg-white border border-slate-200 rounded-lg p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+                    <article class="relative bg-white border ${res.isUserUpload ? 'border-emerald-200 ring-1 ring-emerald-100' : 'border-slate-200'} rounded-lg p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition">
                         <div>
-                            <div class="flex items-center justify-between gap-2 mb-3">
-                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-100">
-                                    ${res.category}
-                                </span>
-                                <span class="text-xs font-mono font-semibold px-2 py-0.5 rounded border ${badgeStyle}">
-                                    ${res.format}
-                                </span>
+                            <!-- Intestazione scheda: categoria a sinistra, ICONA TIPO DOCUMENTO IN ALTO A DESTRA -->
+                            <div class="flex items-start justify-between gap-2 mb-3">
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-100">
+                                        ${escapeHtml(res.category)}
+                                    </span>
+                                    ${res.isUserUpload ? <span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">Allegato</span> : ""}
+                                </div>
+                                <div class="shrink-0">
+                                    ${topRightIcon}
+                                </div>
                             </div>
-                            <h3 class="text-lg font-bold text-slate-900 mb-2">${res.title}</h3>
-                            <p class="text-sm text-slate-600 mb-4 leading-relaxed">${res.summary}</p>
+
+                            <h3 class="text-lg font-bold text-slate-900 mb-1.5 break-words">${escapeHtml(res.title)}</h3>
+                            <p class="text-xs text-slate-400 font-mono mb-2 truncate" title="${escapeHtml(res.fileName)}">${escapeHtml(res.fileName)}</p>
+                            <p class="text-sm text-slate-600 mb-4 leading-relaxed">${escapeHtml(res.summary)}</p>
                         </div>
-                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-                            <span class="text-xs text-slate-400 font-mono">${res.date}</span>
-                            <a ${linkAction} class="text-sm font-medium text-blue-600 hover:text-blue-800 transition">
-                                Apri / Scarica &rarr;
-                            </a>
+
+                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                            <span class="text-xs text-slate-400 font-mono">${escapeHtml(res.date)}</span>
+                            ${actionsHtml}
                         </div>
                     </article>
                 `;
@@ -359,20 +833,29 @@
             document.getElementById("restrictedModal").classList.add("hidden");
         }
 
-        // Inizializzazione pagina
+        // 8. INIZIALIZZAZIONE
         document.getElementById("currentYear").textContent = new Date().getFullYear();
         document.getElementById("searchInput").addEventListener("input", (e) => {
             searchQuery = e.target.value;
             renderResources();
         });
 
-        // Chiudi modal cliccando fuori
+        // Chiudi modali cliccando fuori
         document.getElementById("restrictedModal").addEventListener("click", (e) => {
             if (e.target.id === "restrictedModal") closeRestrictedModal();
         });
+        document.getElementById("uploadModal").addEventListener("click", (e) => {
+            if (e.target.id === "uploadModal") closeUploadModal();
+        });
 
-        renderCategoryButtons();
-        renderResources();
+        // Avvio con caricamento allegati salvati nel browser
+        (async function init() {
+            userAttachments = await loadAttachmentsFromDB();
+            // Ordina dal più recente al più vecchio
+            userAttachments.sort((a, b) => (b.id || "").localeCompare(a.id || ""));
+           P renderCategoryButtons();
+            renderResources();
+        })();
     </script>
 </body>
 </html>
